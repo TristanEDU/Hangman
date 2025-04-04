@@ -13,6 +13,8 @@ const resetGame = () => {
     // Ressetting game variables and UI elements
     correctLetters = [];
     wrongGuessCount = 0;
+    //console log for testing
+    // console.log("Initial wrongGuessCount:", wrongGuessCount);
     hangmanImage.src = "images/hangman-0.svg";
     guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
     wordDisplay.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("");
@@ -38,22 +40,30 @@ const gameOver = (isVictory) => {
 }
 
 const initGame = (button, clickedLetter) => {
+    console.log("initGame called with Letter:", clickedLetter); // ChatGPT suggested console log for learning/practice purposes
     // Checking if clickedLetter is exist on the currentWord
     if(currentWord.includes(clickedLetter)) {
+        console.log(clickedLetter, "is in the word"); // ChatGPT suggested console log for learning/practice purposes
+        console.log("current Word", currentWord);
         // Showing all correct letters on the word display
         [...currentWord].forEach((letter, index) => {
             if(letter === clickedLetter) {
+                console.log("Correct letter so far:", correctLetters); //correct letter log, it should update every time a correct letter is clicked but for some reason it will only update every a the previous correct letter and not the current one.
                 correctLetters.push(letter);
                 wordDisplay.querySelectorAll("li")[index].innerText = letter;
                 wordDisplay.querySelectorAll("li")[index].classList.add("guessed");
             }
         });
     } else {
+        console.log(clickedLetter, "is NOT in the word"); // ChatGPT suggested console log for learning/practice purposes
         // If clicked letter doesn't exist then update the wrongGuessCount and hangman image
         wrongGuessCount++;
+        // Console log for testing purposes
+        console.log("Current wrong guess count", wrongGuessCount);
         hangmanImage.src = `images/hangman-${wrongGuessCount}.svg`;
     }
-    button.disabled = true; // Disabling the clicked button so user can't click again
+    button.disabled = true; 
+    console.log("button status", button.disabled); // Disabling the clicked button so user can't click again and console logging it
     guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
 
     // Calling gameOver function if any of these condition meets
@@ -71,3 +81,59 @@ for (let i = 97; i <= 122; i++) {
 
 getRandomWord();
 playAgainBtn.addEventListener("click", getRandomWord);
+
+// console logs for learning and testing purposes:
+wrongGuessCount++;
+console.log("Updated wrongGuessCount:", wrongGuessCount);
+
+// ChatGPT practice code. Anything in this section was written in response to a promt from GPT
+const testDiv = document.querySelector(".test");
+const levelDiv = document.querySelector(".level-select");
+
+for (let i = 1; i <= 5; i++) {
+    const button = document.createElement("button");
+    button.innerText = "Level " + i;
+    testDiv.appendChild(button);
+
+    button.addEventListener("click", () => {
+        console.log("You Selected Level " + i);
+    });
+}
+
+// function createLevelButton() {
+// console.log("reached function")
+//     const button = document.createElement("button");
+//     button.innerText = "Easy";
+//     levelDiv.appendChild(button);
+
+//     button.addEventListener("click", () => {
+//         console.log("You selected Easy difficulty");
+//     });
+// }
+
+function createLevelButtons() {
+    console.log("reached function");
+
+    const easybtn = document.createElement("button");
+    easybtn.innerText = "Easy";
+    easybtn.addEventListener("click", () => {
+        console.log("You selected Easy difficulty");
+    });
+    levelDiv.appendChild(easybtn);
+
+    const MediumBtn = document.createElement("button");
+    MediumBtn.innerText = "Medium";
+    MediumBtn.addEventListener("click", () => {
+        console.log("You selected Medium difficulty");
+    });
+    levelDiv.appendChild(MediumBtn);
+
+    const HardBtn = document.createElement("button");
+    HardBtn.innerText = "Hard";
+    HardBtn.addEventListener("click", () => {
+        console.log("You selected Hard difficulty");
+    });
+    levelDiv.appendChild(HardBtn);
+}
+    
+createLevelButtons();
